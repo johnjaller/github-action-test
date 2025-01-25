@@ -33,7 +33,7 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message-failure: |
-            **Package build failed**
+            **Package build failed :no_entry_sign:**
           message-success: |
             **Package build Success :white_check_mark:**
           refresh-message-position: true

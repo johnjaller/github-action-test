@@ -11,19 +11,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    permissions: write-all
     steps:
       - uses: actions/checkout@v3
       # Setup .npmrc file to publish to GitHub Packages
       - name: Set commit status as pending
-        uses: myrotvorets/set-commit-status-action@master
+        uses: ouzi-dev/commit-status-updater@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          sha: github.pull_request.head.sha
           status: pending
-          context: Build Status
+          name: Build Status
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -34,17 +31,15 @@ jobs:
         run: npm run build
       - name: check if build is ready
         if: ${{ success() }}
-        uses: myrotvorets/set-commit-status-action@master
+        uses: ouzi-dev/commit-status-updater@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: success
-          sha: ${{ github.sha }}
-          context: Build Status
-      - name: check if build failed
+          name: Build Status
+      - name: ouzi-dev/commit-status-updater@v2
         if: ${{ failure() }}
-        uses: myrotvorets/set-commit-status-action@master
+        uses: ouzi-dev/commit-status-updater@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: failure
-          sha: ${{ github.sha }}
-          context: Build Status
+          name: Build Status

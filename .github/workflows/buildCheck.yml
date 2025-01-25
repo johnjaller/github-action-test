@@ -32,6 +32,7 @@ jobs:
         if: failure()
         run: echo "result=$(npm run build)" >> output.log
       - name: Read package.json
+        if: failure()
         id: fail-message
         uses: juliangruber/read-file-action@v1
         with:

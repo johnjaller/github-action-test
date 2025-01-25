@@ -16,7 +16,7 @@ jobs:
       - uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Packages building :raacing_car:**
+            **Packages building :racing_car:**
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -26,6 +26,9 @@ jobs:
       - name: Build
         id: build-step
         run: npm run build
+      - name: Build failed message
+        if: always()
+        run: echo ${{join(steps.build-step.outputs.*, '\n')}}
       - name: Build failed message
         if: always()
         uses: mshick/add-pr-comment@v2

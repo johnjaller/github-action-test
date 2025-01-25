@@ -37,7 +37,7 @@ jobs:
           message-path: output.txt
           find: |
             << FILE_CONTENTS >>
-          message-failure: |
+          message: |
             **Build failed :no_entry_sign:**
             Reasons:
             ```

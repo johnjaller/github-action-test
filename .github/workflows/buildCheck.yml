@@ -38,7 +38,7 @@ jobs:
         with:
           path: ./output.log
       - name: Build failed message
-        if: always() && steps.build-step.outcome == failure()
+        if: always()
         uses: mshick/add-pr-comment@v2
         with:
           message: |

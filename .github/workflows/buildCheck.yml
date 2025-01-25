@@ -25,7 +25,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: pending
           sha: ${{ github.event.pull_request.head.sha }}
-          context: Build Status
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -41,4 +40,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           sha: ${{ github.event.pull_request.head.sha }}
-          context: Build Status

@@ -26,30 +26,22 @@ jobs:
       # set new version
       - name: Build
         id: build-step
-        run: npm run build
+        run: |
+          npm run build || npm run build >> output.log
+          echo "message=$(cat output.log)" >> $GITHUB_OUTPUT
       - name: Build failed message
-        id: set-fail-message
         if: failure()
-        run: npm run build >> output.log
-      - name: Read output
-        if: failure()
-        id: fail-message
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./output.log
-      - name: Build failed message
-        if: failure() && steps.build-step.conclusion == 'failure'
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Package build failed**
-            Reasons:
+            **Package build failed :no_entry_sign:**
+            Output:
             ```
-            ${{steps.fail-message.outputs.content}}
+            ${{steps.build-step.outputs.message}}
             ```
           refresh-message-position: true
           update-only: true
-      - name: Build failed message
+      - name: Build Success message
         if: success()
         uses: mshick/add-pr-comment@v2
         with:

@@ -30,7 +30,7 @@ jobs:
       - name: Build failed message
         id: set-fail-message
         if: failure()
-        run: echo npm run build >> output.log
+        run: echo $(npm run build) >> output.log
       - name: Read package.json
         if: failure()
         id: fail-message

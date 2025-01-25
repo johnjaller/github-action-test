@@ -21,6 +21,7 @@ jobs:
         uses: myrotvorets/set-commit-status-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          sha: github.pull_request.head.sha
           status: pending
           context: Build Status
       - uses: actions/setup-node@v3
@@ -37,6 +38,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: success
+          sha: ${{ github.sha }}
           context: Build Status
       - name: check if build failed
         if: ${{ failure() }}
@@ -44,4 +46,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: failure
+          sha: ${{ github.sha }}
           context: Build Status

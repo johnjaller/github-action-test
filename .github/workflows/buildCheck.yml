@@ -16,8 +16,6 @@ jobs:
       - uses: mshick/add-pr-comment@v2
         with:
           update-only: true
-          message-path: |
-            message.txt
           message: |
             **Packages building :raacing_car:**
           message-success: |

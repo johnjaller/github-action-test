@@ -27,11 +27,18 @@ jobs:
         id: build-step
         run: npm run build
       - name: Build failed message
+        id: fail-message
         if: failure()
-        run: npm run build | tee output.txt
+        run: echo "result=$(npm run build)" >> $GITHUB_OUTPUT
       - name: Build failed message
         if: always()
         uses: mshick/add-pr-comment@v2
         with:
+          message: |
+            ** Package build failed **
+            Reasons:
+            ```
+            ${{steps.fail-message.outputs.result}}
+            ```
+          refresh-message-position: true
           update-only: true
-          message-path: output.txt

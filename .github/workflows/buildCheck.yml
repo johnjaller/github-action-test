@@ -30,15 +30,15 @@ jobs:
       - name: Build failed message
         id: set-fail-message
         if: failure()
-        run: echo $(npm run build) >> output.log
-      - name: Read package.json
+        run: npm run build >> output.log
+      - name: Read output
         if: failure()
         id: fail-message
         uses: juliangruber/read-file-action@v1
         with:
           path: ./output.log
       - name: Build failed message
-        if: always()
+        if: failure() && steps.build-step.conclusion == 'failure'
         uses: mshick/add-pr-comment@v2
         with:
           message: |
@@ -47,5 +47,13 @@ jobs:
             ```
             ${{steps.fail-message.outputs.content}}
             ```
+          refresh-message-position: true
+          update-only: true
+      - name: Build failed message
+        if: success()
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            **Package build Success :white_check_mark:**
           refresh-message-position: true
           update-only: true

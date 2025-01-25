@@ -13,13 +13,6 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to GitHub Packages
-      #   - name: Set commit status as pending
-      #     uses: myrotvorets/set-commit-status-action@master
-      #     with:
-      #       token: ${{ secrets.GITHUB_TOKEN }}
-      #       status: pending
-      #       sha: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -28,10 +21,10 @@ jobs:
       # set new version
       - name: Build
         run: npm run build
-      - name: check if build is ready
-        if: ${{ always() }}
-        uses: myrotvorets/set-commit-status-action@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          sha: ${{ github.event.pull_request.head.sha }}
+    #   - name: check if build is ready
+    #     if: ${{ always() }}
+    #     uses: myrotvorets/set-commit-status-action@master
+    #     with:
+    #       token: ${{ secrets.GITHUB_TOKEN }}
+    #       status: ${{ job.status }}
+    #       sha: ${{ github.event.pull_request.head.sha }}

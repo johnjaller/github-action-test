@@ -13,6 +13,12 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
+      - uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            **Packages building :raacing_car:**
+          message-success: |
+            **Build Success :white_check_mark:**
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -21,10 +27,3 @@ jobs:
       # set new version
       - name: Build
         run: npm run build
-    #   - name: check if build is ready
-    #     if: ${{ always() }}
-    #     uses: myrotvorets/set-commit-status-action@master
-    #     with:
-    #       token: ${{ secrets.GITHUB_TOKEN }}
-    #       status: ${{ job.status }}
-    #       sha: ${{ github.event.pull_request.head.sha }}

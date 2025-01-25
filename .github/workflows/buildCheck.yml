@@ -27,12 +27,19 @@ jobs:
         id: build-step
         run: npm run build
       - name: Build failed message
-        if: always()
-        run: echo ${{join(steps.build-step.outputs.*, '\n')}}
+        if: failure()
+        run: npm run build | tee output.txt
       - name: Build failed message
         if: always()
         uses: mshick/add-pr-comment@v2
         with:
           update-only: true
+          message-path: output.txt
+          find: |
+            << FILE_CONTENTS >>
           message-failure: |
             **Build failed :no_entry_sign:**
+            Reasons:
+            ```
+            << FILE_CONTENTS >>
+            ```

@@ -17,7 +17,13 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to GitHub Package
+      # Setup .npmrc file to publish to GitHub Packages
+      - name: Set commit status as pending
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: pending
+          context: Build Status
       - uses: actions/setup-node@v3
         with:
           node-version: 18

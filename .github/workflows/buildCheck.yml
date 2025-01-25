@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: mshick/add-pr-comment@v2
         with:
+          refresh-message-position: true
           message: |
             **Packages building :racing_car:**
       - uses: actions/setup-node@v3
@@ -27,9 +28,14 @@ jobs:
         id: build-step
         run: npm run build
       - name: Build failed message
-        id: fail-message
+        id: set-fail-message
         if: failure()
-        run: echo "result=$(npm run build)" >> $GITHUB_OUTPUT
+        run: echo "result=$(npm run build)" >> output.log
+      - name: Read package.json
+        id: fail-message
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./output.log
       - name: Build failed message
         if: always()
         uses: mshick/add-pr-comment@v2
@@ -38,7 +44,8 @@ jobs:
             ** Package build failed **
             Reasons:
             ```
-            ${{steps.fail-message.outputs.result}}
+            ${{steps.fail-message.outputs.content}}
             ```
           refresh-message-position: true
           update-only: true
+x

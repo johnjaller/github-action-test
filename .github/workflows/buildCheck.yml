@@ -1,0 +1,49 @@
+name: Check build ready
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+    paths:
+      - "src/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to GitHub Packages
+      - name: Set commit status as pending
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: pending
+          context: Build Status
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://npm.pkg.github.com"
+          # Defaults to the user or organization that owns the workflow file
+          scope: "@choco-up"
+      - run: npm ci
+      # set new version
+      - name: Build
+        run: npm run build
+      - name: check if build is ready
+        if: ${{ success() }}
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: success
+          context: Build Status
+      - name: check if build failed
+        if: ${{ failure() }}
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: failure
+          context: Build Status

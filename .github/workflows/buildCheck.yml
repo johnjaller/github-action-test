@@ -17,10 +17,6 @@ jobs:
         with:
           message: |
             **Packages building :raacing_car:**
-          message-success: |
-            **Build Success :white_check_mark:**
-          message-failure: |
-            **Build failed :no_entry_sign:**
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -30,12 +26,10 @@ jobs:
       - name: Build
         id: build-step
         run: npm run build
-    #   - name: Build failed message
-    #     if: failure()
-    #     uses: mshick/add-pr-comment@v2
-    #     with:
-    #       update-only: true
-    #       message: |
-    #         **Packages building :raacing_car:**
-    #       message-success: |
-    #         **Build Success :white_check_mark:**
+      - name: Build failed message
+        if: always()
+        uses: mshick/add-pr-comment@v2
+        with:
+          update-only: true
+          message-failure: |
+            **Build failed :no_entry_sign:**

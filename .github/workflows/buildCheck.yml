@@ -36,10 +36,7 @@ jobs:
           update-only: true
           message-path: output.txt
           find: |
-            << FILE_CONTENTS >>
-          message: |
             **Build failed :no_entry_sign:**
-            Reasons:
             ```
             << FILE_CONTENTS >>
             ```

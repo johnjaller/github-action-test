@@ -30,7 +30,7 @@ jobs:
       - name: Build failed message
         id: set-fail-message
         if: failure()
-        run: echo "result=$(npm run build)" >> output.log
+        run: echo npm run build >> output.log
       - name: Read package.json
         if: failure()
         id: fail-message
@@ -38,11 +38,11 @@ jobs:
         with:
           path: ./output.log
       - name: Build failed message
-        if: always()
+        if: always() && steps.build-step.outcome == failure()
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            ** Package build failed **
+            **Package build failed**
             Reasons:
             ```
             ${{steps.fail-message.outputs.content}}

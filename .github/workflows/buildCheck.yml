@@ -27,16 +27,21 @@ jobs:
       - name: Build
         id: build-step
         run: |
-          npm run build || (npm run build >> output.log && echo "message=$(cat output.log)" >> $GITHUB_OUTPUT)
+          (npm run build 2>&1) | tee output.log
       - name: Build failed message
+        id: fail-message
         if: failure()
+        run: |
+          echo "message=$(cat output.log)" >> $GITHUB_OUTPUT
+      - name: Build failed message
+        if: failure() && steps.build-step.conclusion == 'failure'
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Package build failed :no_entry_sign:**
-            Output:
+            **Package build failed**
+            Reasons:
             ```
-            ${{steps.build-step.outputs.message}}
+            ${{steps.fail-message.outputs.content}}
             ```
           refresh-message-position: true
           update-only: true

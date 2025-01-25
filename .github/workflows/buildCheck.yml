@@ -27,8 +27,7 @@ jobs:
       - name: Build
         id: build-step
         run: |
-          npm run build || npm run build >> output.log
-          echo "message=$(cat output.log)" >> $GITHUB_OUTPUT
+          npm run build || (npm run build >> output.log && echo "message=$(cat output.log)" >> $GITHUB_OUTPUT)
       - name: Build failed message
         if: failure()
         uses: mshick/add-pr-comment@v2
